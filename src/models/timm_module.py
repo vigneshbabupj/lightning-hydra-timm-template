@@ -1,19 +1,16 @@
 from typing import Any, List
 
-import torch
 import timm
+import torch
 from pytorch_lightning import LightningModule
 from torchmetrics import MaxMetric
 from torchmetrics.classification.accuracy import Accuracy
 
-class TimmModel():
+class TimmModel:
     name: str
     num_classes: int
 
-    def __init__(self,
-    name: str,
-    num_classes: int
-    ):
+    def __init__(self, name: str, num_classes: int):
     
         self.model = timm.create_model(name,pretrained=True,num_classes=num_classes)
         
