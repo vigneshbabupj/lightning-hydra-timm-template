@@ -1,0 +1,11 @@
+build:
+  python_version: "3.10"
+  python_packages:
+    - pyrootutils==1.0.4
+    - torch==1.12.1
+    - torchvision==0.13.1
+    - timm==0.6.7
+    - hydra-core==1.2.0
+    - pytorch-lightning==1.7.1
+
+predict: "predict.py:Predictor"
