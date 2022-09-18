@@ -151,3 +151,5 @@ logs/
 .env
 .autoenv
 .gitpod.yml
+/data
+/logs
