@@ -7,7 +7,7 @@ defaults:
   - datamodule: cifar10.yaml
   - model: timm.yaml
   - callbacks: default.yaml
-  - logger: many_loggers.yaml # set logger here or use command line (e.g. `python train.py logger=tensorboard`)
+  - logger: tensorboard.yaml # set logger here or use command line (e.g. `python train.py logger=tensorboard`)
   - trainer: default.yaml
   - paths: default.yaml
   - extras: default.yaml
