@@ -48,4 +48,3 @@ hydra:
       model.optimizer._target_: choice(torch.optim.Adam, torch.optim.SGD, torch.optim.RMSprop)
       model.optimizer.lr: interval(0.0001, 0.1)
       datamodule.batch_size: choice(32, 64, 128)
-      
