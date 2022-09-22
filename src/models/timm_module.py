@@ -54,6 +54,7 @@ class TimmLitModule(LightningModule):
         # by default lightning executes validation step sanity checks before training starts,
         # so we need to make sure val_acc_best doesn't store accuracy from these checks
         self.val_acc_best.reset()
+        
 
     def step(self, batch: Any):
         x, y = batch
@@ -86,6 +87,9 @@ class TimmLitModule(LightningModule):
         acc = self.val_acc(preds, targets)
         self.log("val/loss", loss, on_step=False, on_epoch=True, prog_bar=False)
         self.log("val/acc", acc, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("hp_metirc", acc)
+
+        
 
         return {"loss": loss, "preds": preds, "targets": targets}
 
@@ -93,6 +97,7 @@ class TimmLitModule(LightningModule):
         acc = self.val_acc.compute()  # get val accuracy from current epoch
         self.val_acc_best.update(acc)
         self.log("val/acc_best", self.val_acc_best.compute(), on_epoch=True, prog_bar=True)
+        
         self.val_acc.reset()
 
     def test_step(self, batch: Any, batch_idx: int):
