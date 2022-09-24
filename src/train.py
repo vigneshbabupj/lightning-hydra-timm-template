@@ -33,6 +33,7 @@ root = pyrootutils.setup_root(
 from typing import List, Optional, Tuple
 
 import hydra
+import torch
 import pytorch_lightning as pl
 from omegaconf import DictConfig
 from pytorch_lightning import Callback, LightningDataModule, LightningModule, Trainer
@@ -95,6 +96,13 @@ def train(cfg: DictConfig) -> Tuple[dict, dict]:
         trainer.fit(model=model, datamodule=datamodule, ckpt_path=cfg.get("ckpt_path"))
 
     train_metrics = trainer.callback_metrics
+
+    log.info("Scripting Model ...")
+
+    scripted_model = model.to_torchscript(method="script")
+    torch.jit.save(scripted_model, f"{cfg.paths.output_dir}/model.script.pt")
+
+    log.info(f"Saving traced model to {cfg.paths.output_dir}/model.script.pt")
 
     if cfg.get("test"):
         log.info("Starting testing!")

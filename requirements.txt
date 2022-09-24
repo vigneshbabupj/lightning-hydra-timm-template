@@ -18,6 +18,9 @@ timm==0.6.7
 # mlflow
 # comet-ml
 
+# --------- demo --------- #
+gradio==3.3.1
+
 # --------- others --------- #
 pyrootutils     # standardizing the project root setup
 pre-commit      # hooks for applying linters on commit
