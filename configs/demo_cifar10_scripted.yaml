@@ -5,7 +5,7 @@ defaults:
   - paths: default.yaml
   - hydra: default.yaml
 
-task_name: "demo_scripted"
+task_name: "demo_scripted_cifar10"
 
 # checkpoint is necessary for demo
 ckpt_path: ???

@@ -5,7 +5,7 @@ import torch
 from pytorch_lightning import LightningModule
 from torchmetrics import MaxMetric
 from torchmetrics.classification.accuracy import Accuracy
-
+from torchvision import transforms as T
 
 class TimmLitModule(LightningModule):
     """Example of LightningModule for MNIST classification.
@@ -47,8 +47,22 @@ class TimmLitModule(LightningModule):
         # for logging best so far validation accuracy
         self.val_acc_best = MaxMetric()
 
+        self.predict_transform = T.Normalize((0.4915, 0.4823, .4468), (0.2470, 0.2435, 0.2616))
+
     def forward(self, x: torch.Tensor):
         return self.net(x)
+
+    @torch.jit.export
+    def forward_jit(self, x: torch.Tensor):
+        with torch.no_grad():
+            # transform the inputs
+            x = self.predict_transform(x)
+
+            # forward pass
+            logits = self.forward(x)
+            preds = torch.nn.functional.softmax(logits, dim=-1)
+
+        return preds
 
     def on_train_start(self):
         # by default lightning executes validation step sanity checks before training starts,
