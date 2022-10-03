@@ -11,9 +11,9 @@ from typing import List, Tuple
 
 import torch
 import hydra
-import numpy as np
 import gradio as gr
 from omegaconf import DictConfig
+import torchvision.transforms as T
 
 from src import utils
 
@@ -36,7 +36,17 @@ def demo(cfg: DictConfig) -> Tuple[dict, dict]:
     model = torch.jit.load(cfg.ckpt_path)
 
     log.info(f"Loaded Model: {model}")
-    labels = [
+    
+
+    def recognize_digit(image):
+        if image is None:
+            return None
+        image = T.ToTensor()(image).unsqueeze(0)
+        # image = torch.tensor(image[None, ...], dtype=torch.float32)#.swapaxes(1, 3)
+        preds = model.forward_jit(image)
+        preds = preds[0].tolist()
+        print(preds)
+        labels = [
             "plane", 
             "car", 
             "bird", 
@@ -48,15 +58,6 @@ def demo(cfg: DictConfig) -> Tuple[dict, dict]:
             "ship", 
             "truck"
             ]
-
-    def recognize_digit(image):
-        if image is None:
-            return None
-        image = np.rollaxis(image, 2, 0)
-        image = torch.tensor(image[None, ...], dtype=torch.float32)#.swapaxes(1, 3)
-        preds = model.forward_jit(image)
-        preds = preds[0].tolist()
-        print(preds)
         return {labels[i]: preds[i] for i in range(10)}
 
     demo = gr.Interface(
@@ -66,7 +67,7 @@ def demo(cfg: DictConfig) -> Tuple[dict, dict]:
         live=True,
     )
 
-    demo.launch()
+    demo.launch(server_name="0.0.0.0", server_port=8080)
 
 @hydra.main(
     version_base="1.2", config_path=root / "configs", config_name="demo_cifar10_scripted.yaml"

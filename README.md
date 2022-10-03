@@ -21,7 +21,7 @@
 
 Pytorch lightning + Hydra + Timm model repo on Cifar10 dataset
 
-## How to run
+## How to run - train
 
 Install dependencies
 
@@ -63,7 +63,7 @@ You can override any parameter from command line like this
 python src/train.py trainer.max_epochs=20 datamodule.batch_size=64
 ```
 
-## Docker
+## Train using Docker
 
 Run as Docker image
 
@@ -115,3 +115,43 @@ or you can also change the timm.yaml to configure for the model to be run
   name: "resnet18"
   num_classes: 10
 ```
+
+## Demo App
+
+Demo based on Gradio app can be run from the torch script checkpoint
+
+```bash
+#cifar10
+python3 src/demo_cifar10_scripted.py -m ckpt_path=<path to model.script.pt>
+
+#mnist
+python3 src/demo_scripted.py -m ckpt_path=<path to model.script.pt>
+
+```
+## Demo using Docker (Cifar10)
+
+Docker image: [vigneshbabuph/torchscript_gradio_demo](https://hub.docker.com/r/vigneshbabupj/torchscript_gradio_demo/tags)
+
+Cd into the demo folder
+
+```bash
+cd /Docker/demo/
+
+#Build image locally or pull from docker hub
+
+#Buid image locally
+#docker image build -t vigneshbabupj/torchscript_gradio_demo .
+
+#pull from docker hub
+docker pull vigneshbabupj/torchscript_gradio_demo:latest
+
+#run demo from docker image
+docker run --rm --volume `pwd`:/opt/src -it -p 8080:8080 vigneshbabupj/torchscript_gradio_demo:latest
+
+```
+place the model checkpoint to be used under the demo folder as "model.script.pt" or pass the ckpt_path as argument
+
+Gradio server with the demo app is launched, click on the url to access and use it
+
+
+
