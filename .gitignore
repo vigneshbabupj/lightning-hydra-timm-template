@@ -153,3 +153,4 @@ logs/
 .gitpod.yml
 /data
 /logs
+Docker/aws_demo/aws_cred.py

@@ -153,5 +153,15 @@ place the model checkpoint to be used under the demo folder as "model.script.pt"
 
 Gradio server with the demo app is launched, click on the url to access and use it
 
+## Demo App - Deploy in AWS
 
+cd into `Docker/aws_demo/`
 
+- upload trained model to AWS S3 bucket and update `bucket_name` and `filename` in `s3_cifar10_docker.py`
+- create `aws_cred.py` with AWS access configuration keys (access_key_id & secret_access_key)
+- Launch an ec2 instance with an IAM role to access ECR and S3
+- Upload the files in `aws_demo` to the instance and install aws cli, docker
+- Create an ECR repo and build & upload the docker image using the push commands
+- Create an ECS FARGATE cluster and task definition to run as a service
+- Deploy
+- Stop and Delete All the started services to close
