@@ -19,7 +19,7 @@ timm==0.6.7
 # comet-ml
 
 # --------- demo --------- #
-gradio==3.3.1
+gradio==3.4.1
 
 # --------- others --------- #
 pyrootutils     # standardizing the project root setup
