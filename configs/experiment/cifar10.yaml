@@ -8,7 +8,7 @@ defaults:
   - override /model: timm.yaml
   - override /callbacks: default.yaml
   - override /trainer: default.yaml
-  - override /loggers: many_loggers.yaml
+  - override /logger: tensorboard.yaml
 
 # all parameters below will be merged with parameters from default configurations set above
 # this allows you to overwrite only specified parameters
@@ -24,12 +24,12 @@ trainer:
 
 model:
   optimizer:
-    lr: 0.002
+    lr: 0.05
   net:
     # lin1_size: 128
     # lin2_size: 256
     # lin3_size: 64
-    name: "resnet18"
+    model_name: "resnet18"
     num_classes: 10
 
 datamodule:

@@ -52,17 +52,17 @@ class TimmLitModule(LightningModule):
     def forward(self, x: torch.Tensor):
         return self.net(x)
 
-    @torch.jit.export
-    def forward_jit(self, x: torch.Tensor):
-        with torch.no_grad():
-            # transform the inputs
-            x = self.predict_transform(x)
+    # @torch.jit.export
+    # def forward_jit(self, x: torch.Tensor):
+    #     with torch.no_grad():
+    #         # transform the inputs
+    #         x = self.predict_transform(x)
 
-            # forward pass
-            logits = self.forward(x)
-            preds = torch.nn.functional.softmax(logits, dim=-1)
+    #         # forward pass
+    #         logits = self.forward(x)
+    #         preds = torch.nn.functional.softmax(logits, dim=-1)
 
-        return preds
+    #     return preds
 
     def on_train_start(self):
         # by default lightning executes validation step sanity checks before training starts,
