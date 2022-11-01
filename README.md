@@ -165,3 +165,40 @@ cd into `Docker/aws_demo/`
 - Create an ECS FARGATE cluster and task definition to run as a service
 - Deploy
 - Stop and Delete All the started services to close
+
+## Distributed Training
+
+Code Changes for distributed training and FSDP : [repo](https://github.com/vigneshbabupj/FairScale_distributed_training)
+
+## Model Explainability
+
+Refer to [Explainability.md](log_book\explainability\Explainability.md)
+
+Code 
+- Explainabiliy : explainability\explain.py
+- Robustness : explainability\robustness.py
+
+## Model Serving
+
+Refer to [torchserve.md](log_book\model_serve\torchserve.md)
+
+Model handlers: src\torch_handlers
+Create .mar and serve model
+```bash
+torch-model-archiver --model-name cifar10_basic --version 1.0 --serialized-file /workspace/lightning-hydra-timm-template/logs/train/runs/2022-11-01_06-55-34/model.script.pt --handler /workspace/lightning-hydra-timm-template/src/torch_handlers/cifar10_handler.py --extra-files /workspace/lightning-hydra-timm-template/src/torch_handlers/cifar10_classes/index_to_name.json
+
+docker run -it --rm --net=host -v `pwd`:/opt/src pytorch/torchserve:latest bash
+cd /opt/src
+
+torchserve --start --model-store model_store --models cifar10=cifar10_basic.mar
+
+torchserve --stop
+
+```
+
+Run test scripts for cifar10 model serve : tests\test_serve
+```bash
+
+pytest tests/torch_serve
+
+```
